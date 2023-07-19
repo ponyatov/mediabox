@@ -11,6 +11,11 @@ CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 R += $(wildcard src/*.rs)
 S += $(R) Cargo.toml
 
+# all
+.PHONY: all
+all:
+	cargo build
+
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)
 MERGE += apt.dev apt.txt apt.msys
