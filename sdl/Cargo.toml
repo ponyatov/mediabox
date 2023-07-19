@@ -1,9 +1,9 @@
 [package]
-name    = "mediabox"
+name    = "sdl"
 version = "0.0.1"
 edition = "2021"
 
-description = "Interactive Media Engine"
+description = "Interactive Media Engine: native SDL player"
 authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
 license     = "MIT"
 

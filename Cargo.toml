@@ -8,3 +8,7 @@ authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
 license     = "MIT"
 
 [dependencies]
+
+[workspace]
+
+members = ["server", "sdl", "browser"]

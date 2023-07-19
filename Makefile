@@ -8,13 +8,20 @@ BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 
 # src
-R += $(wildcard src/*.rs)
-S += $(R) Cargo.toml
+R += $(wildcard src/*.rs server/src/*.rs sdl/src/*.rs browser/src/*.rs)
+S += $(R) Cargo.toml server/Cargo.toml sdl/Cargo.toml browser/Cargo.toml
 
 # all
 .PHONY: all
-all:
-	cargo build
+all: server sdl browser
+
+.PHONY: server sdl browser
+server:
+	cargo run -p $@
+sdl:
+	cargo run -p $@
+browser:
+	cargo run -p $@
 
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)

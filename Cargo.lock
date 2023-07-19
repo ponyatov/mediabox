@@ -3,5 +3,17 @@
 version = 3
 
 [[package]]
+name = "browser"
+version = "0.0.1"
+
+[[package]]
 name = "mediabox"
+version = "0.0.1"
+
+[[package]]
+name = "sdl"
+version = "0.0.1"
+
+[[package]]
+name = "server"
 version = "0.0.1"
