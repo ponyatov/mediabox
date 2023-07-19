@@ -1,0 +1,14 @@
+[package]
+name    = "mediabox"
+version = "0.0.1"
+edition = "2021"
+
+description = "Interactive Media Engine"
+authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
+license     = "MIT"
+
+[dependencies]
+
+[workspace]
+
+members = ["server", "sdl", "browser"]
