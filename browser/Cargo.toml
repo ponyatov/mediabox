@@ -8,3 +8,4 @@ authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
 license     = "MIT"
 
 [dependencies]
+lib = { path = "../lib" }

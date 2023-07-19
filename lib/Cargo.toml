@@ -1,11 +1,11 @@
 [package]
-name    = "server"
+name    = "lib"
 version = "0.0.1"
 edition = "2021"
 
-description = "Interactive Media Engine: server"
+description = "Interactive Media Engine: common library"
 authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
 license     = "MIT"
 
 [dependencies]
-lib = { path = "../lib" }
+# lib = { path = "../lib" }

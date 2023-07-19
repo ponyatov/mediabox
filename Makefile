@@ -8,8 +8,10 @@ BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 
 # src
-R += $(wildcard src/*.rs server/src/*.rs sdl/src/*.rs browser/src/*.rs)
-S += $(R) Cargo.toml server/Cargo.toml sdl/Cargo.toml browser/Cargo.toml
+R += $(wildcard src/*.rs lib/src/*.rs )
+R += $(wildcard server/src/*.rs sdl/src/*.rs browser/src/*.rs )
+S += $(R) Cargo.toml lib/Cargo.toml
+S += server/Cargo.toml sdl/Cargo.toml browser/Cargo.toml
 
 # all
 .PHONY: all
