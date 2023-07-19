@@ -1,1 +1,7 @@
+*~
+*.swp
+*.log
+
+/target/
+
 !.gitignore

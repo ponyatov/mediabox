@@ -7,6 +7,10 @@ REL     = $(shell git rev-parse --short=4 HEAD)
 BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 
+# src
+R += $(wildcard src/*.rs)
+S += $(R) Cargo.toml
+
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)
 MERGE += apt.dev apt.txt apt.msys

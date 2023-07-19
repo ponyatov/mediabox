@@ -1,0 +1,24 @@
+{
+    // files
+    "files.exclude": {
+        "docs": true,
+        ".vscode/*.log": true,
+    },
+
+    "files.watcherExclude": {
+        "docs": true
+    },
+
+    "files.associations": {
+        "*.ino": "cpp",
+    },
+
+    // editor
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.rulers": [80],
+    "workbench.tree.indent": 24,
+    "explorer.autoReveal": false,
+    "files.insertFinalNewline": true,
+}
