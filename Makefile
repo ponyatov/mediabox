@@ -51,8 +51,7 @@ include  app/$(APP).mk
 
 .PHONY: br
 br: $(BR)/.config
-	cd $(BR) ; make menuconfig ;\
-	make -C $(BR)
+	cd $(BR) ; make menuconfig ; make
 
 .PHONY: $(BR)/.config
 $(BR)/.config: $(BR)/README
@@ -73,6 +72,10 @@ $(BR)/.config: $(BR)/README
 .PHONY: install update
 
 install: gz
+	$(MAKE) update
+update:
+	sudo apt update
+	sudo apt install -yu `cat apt.dev apt.txt`
 
 .PHONY: gz
 gz: $(BR)/README
