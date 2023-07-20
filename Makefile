@@ -85,6 +85,7 @@ $(GZ)/$(BR_GZ):
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)
 MERGE += apt.dev apt.txt apt.msys
+MERGE += app hw cpu arch all
 
 .PHONY: dev
 dev:
