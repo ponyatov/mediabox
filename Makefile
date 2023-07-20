@@ -40,6 +40,15 @@ sdl:
 browser:
 	cargo run -p $@
 
+# buildroot
+.PHONY: br
+br: $(BR)/.config
+
+.PHONY: $(BR)/.config
+$(BR)/.config: $(BR)/README
+	rm -f $@
+	cd $(BR) ; make allnoconfig
+
 # install
 .PHONY: install update
 
