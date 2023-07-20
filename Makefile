@@ -16,7 +16,8 @@ GZ  = $(HOME)/gz
 CAR = $(HOME)/.cargo/bin
 
 # tool
-CURL = curl -L -o
+CURL   = curl -L -o
+RUSTUP = $(CAR)/rustup
 
 # src
 R += $(wildcard src/*.rs lib/src/*.rs )
@@ -34,11 +35,11 @@ all: server sdl browser
 
 .PHONY: server sdl browser
 server:
-	cargo run -p $@
+	cargo watch -p $@
 sdl:
-	cargo run -p $@
+	cargo watch -p $@
 browser:
-	cargo run -p $@
+	cargo watch -p $@
 
 # buildroot
 
@@ -71,7 +72,8 @@ $(BR)/.config: $(BR)/README
 # install
 .PHONY: install update
 
-install: gz
+install: gz $(RUSTUP)
+	cargo install cargo-watch
 	$(MAKE) update
 update:
 	sudo apt update
@@ -85,6 +87,9 @@ $(BR)/README: $(GZ)/$(BR_GZ)
 
 $(GZ)/$(BR_GZ):
 	$(CURL) $@ https://github.com/buildroot/buildroot/archive/refs/tags/2023.05.1.tar.gz
+
+$(RUSTUP):
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)
