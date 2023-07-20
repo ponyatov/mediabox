@@ -56,12 +56,17 @@ br: $(BR)/.config
 .PHONY: $(BR)/.config
 $(BR)/.config: $(BR)/README
 	rm -f $@ ; make -C $(BR) allnoconfig
+#
 	cat  all/all.br     >> $@
 	cat arch/$(ARCH).br >> $@
 	cat  cpu/$(CPU).br  >> $@
 	cat   hw/$(HW).br   >> $@
 	cat  app/$(APP).br  >> $@
-	echo 'BR2_DL_DIR="$(GZ)"' >> $@
+#
+	echo 'BR2_DL_DIR="$(GZ)"'               >> $@
+	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"' >> $@
+	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
+	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/all/all.kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
 
 # install
 .PHONY: install update
