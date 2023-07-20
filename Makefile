@@ -8,7 +8,8 @@ BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 
 # version
-BR_VER = 2023.05.1
+BR_VER    = 2023.05.1
+LINUX_VER = 6.3.12
 
 # dir
 CWD = $(CURDIR)
@@ -50,12 +51,15 @@ include  cpu/$(CPU).mk
 include arch/$(ARCH).mk
 include  app/$(APP).mk
 
-.PHONY: br
-br: $(BR)/.config
-	cd $(BR) ; make menuconfig ; make
+BR_CONFIG     = $(BR)/.config
+KERNEL_CONFIG = $(BR)/output/build/linux-$(LINUX_VER)/.config
 
-.PHONY: $(BR)/.config
-$(BR)/.config: $(BR)/README
+.PHONY: br
+br: $(BR_CONFIG) $(KERNEL_CONFIG)
+	cd $(BR) ; make menuconfig && make linux-menuconfig && make
+
+.PHONY: $(BR_CONFIG)
+$(BR_CONFIG): $(BR)/README
 	rm -f $@ ; make -C $(BR) allnoconfig
 #
 	cat  all/all.br     >> $@
@@ -69,6 +73,18 @@ $(BR)/.config: $(BR)/README
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/all/all.kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
 
+.PHONY: $(KERNEL_CONFIG)
+$(KERNEL_CONFIG): $(BR)/.config
+	cat all/all.kernel > $@
+
+$(BR)/README: $(GZ)/$(BR_GZ)
+	zcat $< | tar x && touch $@
+
+$(GZ)/$(BR_GZ):
+	$(CURL) $@ https://github.com/buildroot/buildroot/archive/refs/tags/2023.05.1.tar.gz
+
+qemu: $(BR)/output/images/
+
 # install
 .PHONY: install update
 
@@ -81,12 +97,6 @@ update:
 
 .PHONY: gz
 gz: $(BR)/README
-
-$(BR)/README: $(GZ)/$(BR_GZ)
-	zcat $< | tar x && touch $@
-
-$(GZ)/$(BR_GZ):
-	$(CURL) $@ https://github.com/buildroot/buildroot/archive/refs/tags/2023.05.1.tar.gz
 
 $(RUSTUP):
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh

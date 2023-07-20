@@ -1,1 +1,2 @@
 git make curl rsync
+qemu-system-i386

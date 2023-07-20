@@ -22,6 +22,7 @@
 
     "files.associations": {
         "*.br": "makefile",
+        "*.kernel": "makefile",
     },
 
     // editor
