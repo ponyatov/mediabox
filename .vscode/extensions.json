@@ -1,0 +1,23 @@
+{
+	"recommendations": [
+		"ryuta46.multi-command",
+		"stkb.rewrap",
+		// "tabnine.tabnine-vscode",
+		"ms-vscode.makefile-tools",
+		// formatters
+		"xaver.clang-format",
+		// misc
+		// "hbenl.vscode-test-explorer",
+		// "usernamehw.errorlens",
+		// "ms-vscode-remote.remote-ssh",
+		// "ms-azuretools.vscode-docker",
+		// Rust
+		"rust-lang.rust-analyzer",
+		"tamasfe.even-better-toml",
+		"vadimcn.vscode-lldb",
+		// "swellaby.vscode-rust-test-adapter",
+		// "mnxn.lalrpop-highlight",
+		// "serayuzgur.crates",
+		// "jedeop.crates-completer",
+    ]
+}
