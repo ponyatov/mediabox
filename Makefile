@@ -51,7 +51,8 @@ include  app/$(APP).mk
 
 .PHONY: br
 br: $(BR)/.config
-	cd $(BR) ; make menuconfig
+	cd $(BR) ; make menuconfig ;\
+	make -C $(BR)
 
 .PHONY: $(BR)/.config
 $(BR)/.config: $(BR)/README
@@ -63,8 +64,8 @@ $(BR)/.config: $(BR)/README
 	cat   hw/$(HW).br   >> $@
 	cat  app/$(APP).br  >> $@
 #
-	echo 'BR2_DL_DIR="$(GZ)"'               >> $@
-	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"' >> $@
+	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
+	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/all/all.kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
 
