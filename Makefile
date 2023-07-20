@@ -41,13 +41,27 @@ browser:
 	cargo run -p $@
 
 # buildroot
+
+APP ?= $(MODULE)
+HW  ?= qemu386
+include   hw/$(HW).mk
+include  cpu/$(CPU).mk
+include arch/$(ARCH).mk
+include  app/$(APP).mk
+
 .PHONY: br
 br: $(BR)/.config
+	cd $(BR) ; make menuconfig
 
 .PHONY: $(BR)/.config
 $(BR)/.config: $(BR)/README
-	rm -f $@
-	cd $(BR) ; make allnoconfig
+	rm -f $@ ; make -C $(BR) allnoconfig
+	cat  all/all.br     >> $@
+	cat arch/$(ARCH).br >> $@
+	cat  cpu/$(CPU).br  >> $@
+	cat   hw/$(HW).br   >> $@
+	cat  app/$(APP).br  >> $@
+	echo 'BR2_DL_DIR="$(GZ)"' >> $@
 
 # install
 .PHONY: install update

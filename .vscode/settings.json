@@ -21,7 +21,7 @@
     },
 
     "files.associations": {
-        "*.ino": "cpp",
+        "*.br": "makefile",
     },
 
     // editor
