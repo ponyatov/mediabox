@@ -1,1 +1,2 @@
 code meld clang-format
+bc libncurses-dev

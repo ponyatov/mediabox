@@ -1,0 +1,2 @@
+BR2_TARGET_GENERIC_HOSTNAME="mediabox"
+BR2_TARGET_GENERIC_ISSUE="https://github.com/ponyatov/mediabox"
