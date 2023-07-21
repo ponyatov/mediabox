@@ -72,9 +72,11 @@ $(BR_CONFIG): $(BR)/README
 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/all/all.kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
+	echo 'BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.bb $(CWD)/app/$(APP).bb"' >> $@
 
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR)/.config
+	mkdir -p $(BR) $(BR)/output $(BR)/output/build $(BR)/output/build/linux-$(LINUX_VER)
 	cat all/all.kernel > $@
 
 $(BR)/README: $(GZ)/$(BR_GZ)
@@ -83,7 +85,11 @@ $(BR)/README: $(GZ)/$(BR_GZ)
 $(GZ)/$(BR_GZ):
 	$(CURL) $@ https://github.com/buildroot/buildroot/archive/refs/tags/2023.05.1.tar.gz
 
-qemu: $(BR)/output/images/
+QEMU_KERNEL = $(BR)/output/images/bzImage
+QEMU_INITRD = $(BR)/output/images/rootfs.cpio
+qemu: $(QEMU_KERNEL)
+	$(QEMU) $(QEMU_CFG) \
+		-kernel $(QEMU_KERNEL) -initrd $(QEMU_INITRD)
 
 # install
 .PHONY: install update
