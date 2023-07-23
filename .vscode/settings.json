@@ -22,6 +22,7 @@
 
     "files.associations": {
         "*.br": "makefile",
+        "*.bb": "makefile",
         "*.kernel": "makefile",
     },
 

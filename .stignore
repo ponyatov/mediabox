@@ -1,5 +1,4 @@
-.git/*
-rc
-bin/*
-tmp/*
+.git/**
+tmp/**
+bin/**
 buildroot-*/**

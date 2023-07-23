@@ -32,7 +32,7 @@ BR_GZ = $(BR).tar.gz
 
 # all
 .PHONY: all
-all: server sdl browser
+all:
 
 .PHONY: server sdl browser
 server:
@@ -71,8 +71,7 @@ $(BR_CONFIG): $(BR)/README
 	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
-	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/all/all.kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
-	echo 'BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.bb $(CWD)/app/$(APP).bb"' >> $@
+	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
 
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR)/.config
