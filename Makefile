@@ -36,11 +36,11 @@ all:
 
 .PHONY: server sdl browser
 server:
-	cargo watch -p $@
+	cargo watch -w lib -w config -w $@ -x "run -p $@"
 sdl:
-	cargo watch -p $@
+	cargo watch -w lib -w config -w $@ -x "run -p $@"
 browser:
-	cargo watch -p $@
+	cargo watch -w lib -w config -w $@ -x "run -p $@"
 
 # format
 .PHONY: format
