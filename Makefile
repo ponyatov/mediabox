@@ -21,7 +21,7 @@ CURL   = curl -L -o
 RUSTUP = $(CAR)/rustup
 
 # src
-R += $(wildcard src/*.rs lib/src/*.rs )
+R += $(wildcard src/*.rs lib/src/*.rs config/src/*.rs)
 R += $(wildcard server/src/*.rs sdl/src/*.rs browser/src/*.rs )
 S += $(R) Cargo.toml lib/Cargo.toml
 S += server/Cargo.toml sdl/Cargo.toml browser/Cargo.toml
@@ -41,6 +41,13 @@ sdl:
 	cargo watch -p $@
 browser:
 	cargo watch -p $@
+
+# format
+.PHONY: format
+format: tmp/format_rs
+
+tmp/format_rs: $(R)
+	cargo fmt && touch $@
 
 # buildroot
 
