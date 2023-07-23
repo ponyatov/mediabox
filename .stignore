@@ -1,5 +1,5 @@
-.git/**
-tmp/**
-bin/**
+.git/*
 rc
-.obsidian/**
+bin/*
+tmp/*
+buildroot-*/**
