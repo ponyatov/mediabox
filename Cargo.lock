@@ -10,6 +10,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "config"
+version = "0.0.1"
+dependencies = [
+ "lib",
+]
+
+[[package]]
 name = "lib"
 version = "0.0.1"
 
@@ -28,5 +35,6 @@ dependencies = [
 name = "server"
 version = "0.0.1"
 dependencies = [
+ "config",
  "lib",
 ]
