@@ -1,6 +1,4 @@
 .git/**
 tmp/**
 bin/**
-rc
-.obsidian/**
 buildroot-*/**
