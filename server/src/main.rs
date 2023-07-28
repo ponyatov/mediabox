@@ -22,5 +22,7 @@ fn handle(mut stream: TcpStream) {
         .take_while(|line| !line.is_empty())
         .collect();
 
-    println!("Request: {:#?}", http_request);
+    let req = &http_request[0];
+
+    println!("Request: {:#?}", req);
 }

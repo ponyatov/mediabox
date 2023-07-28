@@ -17,7 +17,8 @@
     },
 
     "files.watcherExclude": {
-        "docs": true
+        "docs": true,
+        "buildroot-*/**": true,
     },
 
     "files.associations": {
