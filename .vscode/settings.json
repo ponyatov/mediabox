@@ -14,6 +14,7 @@
     "files.exclude": {
         "docs": true,
         ".vscode/*.log": true,
+        "buildroot-*/**": true,
     },
 
     "files.watcherExclude": {

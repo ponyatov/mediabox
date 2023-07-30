@@ -9,3 +9,4 @@ license     = "MIT"
 
 [dependencies]
 # lib = { path = "../lib" }
+const_format = "0.2.31"

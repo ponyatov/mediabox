@@ -6,8 +6,8 @@ use std::io::{prelude::*, BufReader};
 use std::net::{TcpListener, TcpStream};
 
 fn main() {
-    let listener = TcpListener::bind(config::web).unwrap();
-    println!("http://{}", config::web);
+    let listener = TcpListener::bind(config::web::bind).unwrap();
+    println!("{}", config::web::url);
     for stream in listener.incoming() {
         let stream = stream.unwrap();
         handle(stream);
