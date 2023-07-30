@@ -1,4 +1,4 @@
 grammar;
 
 /// single character
-pub char: u8 = <c:"."> => c;
+pub Char: char = <c:"."> => c.chars().next().unwrap();
