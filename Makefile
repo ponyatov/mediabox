@@ -24,6 +24,7 @@ RUSTUP = $(CAR)/rustup
 R += $(wildcard src/*.rs lib/src/*.rs config/src/*.rs)
 R += $(wildcard server/src/*.rs sdl/src/*.rs browser/src/*.rs )
 R += $(wildcard server/build.rs                               )
+R += $(wildcard server/*.lalrpop                              )
 S += $(R) Cargo.toml lib/Cargo.toml
 S += server/Cargo.toml sdl/Cargo.toml browser/Cargo.toml
 

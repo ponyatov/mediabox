@@ -1,0 +1,4 @@
+grammar;
+
+/// single character
+pub char: u8 = <c:"."> => c;
