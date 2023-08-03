@@ -1,4 +1,13 @@
+use std::collections::LinkedList;
+
 grammar;
 
 /// single character
-pub Char: char = <c:"."> => c.chars().next().unwrap();
+
+// let mut list = LinkedList::new()
+
+pub Char:LinkedList<&'input str> = {
+    <c:"."> <r:Char> => r.push_back(c),
+    <c:".">          => mut LinkedList::from([c]),
+    };
+// pub Char: char = <c:r"."> => c.chars().next().unwrap();

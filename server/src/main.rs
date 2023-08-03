@@ -8,10 +8,17 @@ use std::net::{TcpListener, TcpStream};
 fn main() {
     let listener = TcpListener::bind(config::web::bind).unwrap();
     println!("{}", config::web::url);
-    for stream in listener.incoming() {
-        let stream = stream.unwrap();
-        handle(stream);
-    }
+    // for stream in listener.incoming() {
+    //     let stream = stream.unwrap();
+    //     handle(stream);
+    // }
+    let http = http::CharParser::new();
+
+    let uri = http.parse("xy").unwrap();
+
+    // uri.iter().map(|c| println!("{}",c));
+    // println!("{}",uri);
+
 }
 
 #[macro_use] extern crate lalrpop_util;
@@ -30,11 +37,11 @@ fn handle(mut stream: TcpStream) {
     // let req = &http_request[0];
     // println!("Request: {:#?}", req);
 
-    let req = buf_reader.lines().next().unwrap().unwrap();
+    // let req = buf_reader.lines().next().unwrap().unwrap();
 
-    let http = http::CharParser::new();
+    // let http = http::CharParser::new();
 
-    let uri = http.parse(&req[0]);
+    // let uri = http.parse("x").unwrap();
 
-    println!("{}",uri.unwrap());
+    // println!("{}",uri);
 }

@@ -35,6 +35,7 @@ BR_GZ = $(BR).tar.gz
 # all
 .PHONY: all
 all:
+	cargo run -p server
 
 .PHONY: server sdl browser
 server:
