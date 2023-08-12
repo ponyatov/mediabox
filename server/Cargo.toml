@@ -10,3 +10,9 @@ license     = "MIT"
 [dependencies]
 lib    = { path = "../lib"    }
 config = { path = "../config" }
+
+lalrpop-util = { version = "0.20.0", features = ["lexer"] }
+regex = "1.9.1"
+
+[build-dependencies]
+lalrpop = "0.20.0"

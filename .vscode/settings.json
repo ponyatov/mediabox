@@ -14,10 +14,12 @@
     "files.exclude": {
         "docs": true,
         ".vscode/*.log": true,
+        "buildroot-*/**": true,
     },
 
     "files.watcherExclude": {
-        "docs": true
+        "docs": true,
+        "buildroot-*/**": true,
     },
 
     "files.associations": {

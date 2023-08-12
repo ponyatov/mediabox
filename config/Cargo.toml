@@ -8,4 +8,5 @@ authors     = ["Dmitry Ponyatov <dponyatov@gmail.com>"]
 license     = "MIT"
 
 [dependencies]
-lib = { path = "../lib" }
+# lib = { path = "../lib" }
+const_format = "0.2.31"

@@ -23,6 +23,8 @@ RUSTUP = $(CAR)/rustup
 # src
 R += $(wildcard src/*.rs lib/src/*.rs config/src/*.rs)
 R += $(wildcard server/src/*.rs sdl/src/*.rs browser/src/*.rs )
+R += $(wildcard server/build.rs                               )
+R += $(wildcard server/*.lalrpop                              )
 S += $(R) Cargo.toml lib/Cargo.toml
 S += server/Cargo.toml sdl/Cargo.toml browser/Cargo.toml
 
@@ -33,6 +35,7 @@ BR_GZ = $(BR).tar.gz
 # all
 .PHONY: all
 all:
+	cargo run -p server
 
 .PHONY: server sdl browser
 server:
@@ -79,6 +82,7 @@ $(BR_CONFIG): $(BR)/README
 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
+	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
 
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR)/.config
