@@ -24,9 +24,7 @@ fn handle(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&mut stream);
     let req = buf_reader.lines().next().unwrap().unwrap();
     println!("{}", req);
-    http::GETParser::new()
-        .parse(&mut stream, &req)
-        .unwrap();
+    http::GETParser::new().parse(&mut stream, &req).unwrap();
 }
 
 pub fn serve(mut stream: &TcpStream, ctype: &[u8], data: &[u8]) {
@@ -55,4 +53,3 @@ const LOGO_384: &[u8] = include_bytes!("../static/logo/384.png");
 const LOGO_512: &[u8] = include_bytes!("../static/logo/512.png");
 const CSS: &[u8] = include_bytes!("../static/css.css");
 const MANIFEST: &[u8] = include_bytes!("../static/manifest");
-
