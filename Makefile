@@ -10,6 +10,7 @@ CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 # version
 BR_VER    = 2023.05.1
 LINUX_VER = 6.3.12
+UPBGE_VER = 0.36
 
 # dir
 CWD = $(CURDIR)
@@ -112,10 +113,13 @@ update:
 	sudo apt install -yu `cat apt.dev apt.txt`
 
 .PHONY: gz
-gz: $(BR)/README
+gz: $(BR)/README $(GZ)/upbge-$(UPBGE_VER)-linux-x86_64.tar.xz
 
 $(RUSTUP):
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+$(GZ)/upbge-$(UPBGE_VER)-linux-x86_64.tar.xz:
+	$(CURL) $@ https://github.com/UPBGE/upbge/releases/download/v$(UPBGE_VER)/upbge-$(UPBGE_VER)-linux-x86_64.tar.xz
 
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)
