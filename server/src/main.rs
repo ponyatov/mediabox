@@ -6,42 +6,53 @@ use std::io::{prelude::*, BufReader};
 use std::net::{TcpListener, TcpStream};
 
 fn main() {
-    let listener = TcpListener::bind(config::web::bind).unwrap();
-    println!("{}", config::web::url);
-    // for stream in listener.incoming() {
-    //     let stream = stream.unwrap();
-    //     handle(stream);
-    // }
-    let http = http::CharParser::new();
-
-    let uri = http.parse("xy").unwrap();
-
-    // uri.iter().map(|c| println!("{}",c));
-    // println!("{}",uri);
-
+    println!("{}", config::url);
+    let listener = TcpListener::bind(config::bind).unwrap();
+    for stream in listener.incoming() {
+        let stream = stream.unwrap();
+        handle(stream);
+    }
 }
 
-#[macro_use] extern crate lalrpop_util;
+#[macro_use]
+extern crate lalrpop_util;
 
 lalrpop_mod!(pub http);
 
 fn handle(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&mut stream);
-
-    // let http_request: Vec<_> = buf_reader
-    //     .lines()
-    //     .map(|result| result.unwrap())
-    //     .take_while(|line| !line.is_empty())
-    //     .collect();
-
-    // let req = &http_request[0];
-    // println!("Request: {:#?}", req);
-
-    // let req = buf_reader.lines().next().unwrap().unwrap();
-
-    // let http = http::CharParser::new();
-
-    // let uri = http.parse("x").unwrap();
-
-    // println!("{}",uri);
+    let buf_reader = BufReader::new(&mut stream);
+    let req = buf_reader.lines().next().unwrap().unwrap();
+    println!("{}", req);
+    http::GETParser::new()
+        .parse(&mut stream, &req)
+        .unwrap();
 }
+
+pub fn serve(mut stream: &TcpStream, ctype: &[u8], data: &[u8]) {
+    stream.write(OK_200).unwrap();
+    stream.write(ctype).unwrap();
+    stream.write(b"\n").unwrap();
+    stream.write(data).unwrap();
+}
+
+const OK_200: &[u8] = b"HTTP 200 OK\n";
+const TEXT_PLAIN: &[u8] = b"Content-Type: text/plain\n";
+const TEXT_HTML: &[u8] = b"Content-Type: text/html\n";
+const TEXT_CSS: &[u8] = b"Content-Type: text/css\n";
+const IMAGE_PNG: &[u8] = b"Content-Type: image/png\n";
+const APP_MANIFEST: &[u8] = b"application/manifest+json\n";
+
+const INDEX_HEAD: &[u8] = include_bytes!("../template/index.html.head");
+const INDEX_TAIL: &[u8] = include_bytes!("../template/index.html.tail");
+const LOGO_PNG: &[u8] = include_bytes!("../static/logo/512.png");
+const LOGO_48: &[u8] = include_bytes!("../static/logo/48.png");
+const LOGO_72: &[u8] = include_bytes!("../static/logo/72.png");
+const LOGO_96: &[u8] = include_bytes!("../static/logo/96.png");
+const LOGO_128: &[u8] = include_bytes!("../static/logo/128.png");
+const LOGO_192: &[u8] = include_bytes!("../static/logo/192.png");
+const LOGO_384: &[u8] = include_bytes!("../static/logo/384.png");
+const LOGO_512: &[u8] = include_bytes!("../static/logo/512.png");
+const CSS: &[u8] = include_bytes!("../static/css.css");
+const MANIFEST: &[u8] = include_bytes!("../static/manifest");
+

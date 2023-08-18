@@ -2,7 +2,7 @@
 #![allow(non_snake_case)]
 #![allow(non_upper_case_globals)]
 
-pub mod web {
+// pub mod web {
 
     /// IP address
     pub const ip: &'static str = "127.0.0.1";
@@ -14,4 +14,5 @@ pub mod web {
 
     /// full URL access address
     pub const url: &'static str = const_format::formatcp!("http://{bind}");
-}
+
+// }

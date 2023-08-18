@@ -1,13 +1,43 @@
-use std::collections::LinkedList;
+use crate::*;
 
-grammar;
+use std::net::TcpStream;
+use std::io::Write;
 
-/// single character
+grammar(stream: &mut TcpStream);
 
-// let mut list = LinkedList::new()
+pub GET:() = "GET " URL " HTTP/1.1";
 
-pub Char:LinkedList<&'input str> = {
-    <c:"."> <r:Char> => r.push_back(c),
-    <c:".">          => mut LinkedList::from([c]),
-    };
-// pub Char: char = <c:r"."> => c.chars().next().unwrap();
+URL:() = {
+    <req:"/"> =>
+        {
+        serve(stream, TEXT_HTML, INDEX_HEAD );
+        // stream.write(format!("<pre>\n{}\n</pre>\n","registry").as_bytes()).unwrap();
+        stream.write(INDEX_TAIL).unwrap();;
+        },
+    "/favicon.ico" =>
+        {serve(stream, IMAGE_PNG, LOGO_PNG      );},
+    "/css.css" =>
+        {serve(stream, TEXT_CSS, CSS            );},
+    "/manifest" =>
+        {serve(stream, APP_MANIFEST, MANIFEST   );},
+    "/logo" LOGO => {}
+}
+
+LOGO:() = {
+    ".png" =>
+        {serve(stream, IMAGE_PNG, LOGO_PNG );},
+    "/48.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_48  );},
+    "/72.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_72  );},
+    "/96.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_96  );},
+    "/128.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_128 );},
+    "/192.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_192 );},
+    "/384.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_384 );},
+    "/512.png" =>
+        {serve(stream, IMAGE_PNG, LOGO_512 );},
+}
