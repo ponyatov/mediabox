@@ -8,7 +8,7 @@ grammar(stream: &mut TcpStream);
 pub GET:() = "GET " URL " HTTP/1.1";
 
 URL:() = {
-    <"/"> =>
+    "/" =>
         {
         serve(stream, TEXT_HTML, HTML_HEAD1 );
         stream.write(MANIFEST_HEAD).unwrap();
@@ -16,7 +16,7 @@ URL:() = {
         stream.write(INDEX_HTML).unwrap();
         stream.write(HTML_TAIL).unwrap();
         },
-    <"/about"> =>
+    "/about" =>
         {
         serve(stream, TEXT_HTML, HTML_HEAD1 );
         stream.write(HTML_HEAD2).unwrap();
@@ -24,11 +24,11 @@ URL:() = {
         stream.write(HTML_TAIL).unwrap();
         },
     "/favicon.ico" =>
-        {serve(stream, IMAGE_PNG, LOGO_PNG      );},
+        {serve(stream, IMAGE_PNG, LOGO_PNG    );},
     "/css.css" =>
-        {serve(stream, TEXT_CSS, CSS            );},
+        {serve(stream, TEXT_CSS, CSS          );},
     "/manifest" =>
-        {serve(stream, APP_MANIFEST, MANIFEST   );},
+        {serve(stream, APP_MANIFEST, MANIFEST );},
     "/logo" LOGO => {}
 }
 

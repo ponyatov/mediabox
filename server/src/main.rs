@@ -4,26 +4,29 @@
 
 use std::io::{prelude::*, BufReader};
 use std::net::{TcpListener, TcpStream};
+use std::thread;
+use std::time::Duration;
 
 fn main() {
     println!("{}", config::url);
     let listener = TcpListener::bind(config::bind).unwrap();
     for stream in listener.incoming() {
         let stream = stream.unwrap();
+        // thread::spawn(|| {
         handle(stream);
+        // });
     }
 }
 
 #[macro_use]
 extern crate lalrpop_util;
-
 lalrpop_mod!(pub http);
 
 fn handle(mut stream: TcpStream) {
     let buf_reader = BufReader::new(&mut stream);
-    let buf_reader = BufReader::new(&mut stream);
     let req = buf_reader.lines().next().unwrap().unwrap();
     println!("{}", req);
+    // thread::sleep(Duration::from_secs(1));
     http::GETParser::new().parse(&mut stream, &req).unwrap();
 }
 
@@ -42,6 +45,7 @@ const IMAGE_PNG: &[u8] = b"Content-Type: image/png\n";
 
 const APP_MANIFEST: &[u8] = b"application/manifest+json\n";
 const MANIFEST_HEAD: &[u8] = b"<link rel=\"manifest\" href=\"/manifest\">";
+const MANIFEST: &[u8] = include_bytes!("../static/manifest");
 
 const HTML_HEAD1: &[u8] = include_bytes!("../template/html.head1");
 const HTML_HEAD2: &[u8] = include_bytes!("../template/html.head2");
@@ -49,6 +53,8 @@ const HTML_TAIL: &[u8] = include_bytes!("../template/html.tail");
 
 const INDEX_HTML: &[u8] = include_bytes!("../template/index.html");
 const ABOUT_HTML: &[u8] = include_bytes!("../static/about.html");
+
+const CSS: &[u8] = include_bytes!("../static/css.css");
 
 const LOGO_PNG: &[u8] = include_bytes!("../static/logo/512.png");
 const LOGO_48: &[u8] = include_bytes!("../static/logo/48.png");
@@ -58,5 +64,3 @@ const LOGO_128: &[u8] = include_bytes!("../static/logo/128.png");
 const LOGO_192: &[u8] = include_bytes!("../static/logo/192.png");
 const LOGO_384: &[u8] = include_bytes!("../static/logo/384.png");
 const LOGO_512: &[u8] = include_bytes!("../static/logo/512.png");
-const CSS: &[u8] = include_bytes!("../static/css.css");
-const MANIFEST: &[u8] = include_bytes!("../static/manifest");
