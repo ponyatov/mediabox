@@ -13,15 +13,15 @@ URL:() = {
         serve(stream, TEXT_HTML, HTML_HEAD1 );
         stream.write(MANIFEST_HEAD).unwrap();
         stream.write(HTML_HEAD2).unwrap();
-        stream.write(INDEX_HEAD).unwrap();
-        // stream.write(format!("<pre>\n{}\n</pre>\n","registry").as_bytes()).unwrap();
-        stream.write(INDEX_TAIL).unwrap();;
+        stream.write(INDEX_HTML).unwrap();
+        stream.write(HTML_TAIL).unwrap();
         },
     <"/about"> =>
         {
         serve(stream, TEXT_HTML, HTML_HEAD1 );
         stream.write(HTML_HEAD2).unwrap();
         stream.write(ABOUT_HTML).unwrap();
+        stream.write(HTML_TAIL).unwrap();
         },
     "/favicon.ico" =>
         {serve(stream, IMAGE_PNG, LOGO_PNG      );},
