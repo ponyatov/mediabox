@@ -12,14 +12,19 @@ BR_VER    = 2023.05.1
 LINUX_VER = 6.3.12
 UPBGE_VER = 0.36
 
+# package
+UPBGE = upbge-$(UPBGE_VER)-linux-x86_64
+
 # dir
 CWD = $(CURDIR)
 GZ  = $(HOME)/gz
 CAR = $(HOME)/.cargo/bin
+BGE = $(HOME)/upbge/$(UPBGE)
 
 # tool
-CURL   = curl -L -o
-RUSTUP = $(CAR)/rustup
+CURL    = curl -L -o
+RUSTUP  = $(CAR)/rustup
+BLENDER = $(BGE)/blender
 
 # src
 R += $(wildcard src/*.rs lib/src/*.rs config/src/*.rs)
@@ -113,13 +118,19 @@ update:
 	sudo apt install -yu `cat apt.dev apt.txt`
 
 .PHONY: gz
-gz: $(BR)/README $(GZ)/upbge-$(UPBGE_VER)-linux-x86_64.tar.xz
+gz: $(BR)/README $(BLENDER)
 
 $(RUSTUP):
 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-$(GZ)/upbge-$(UPBGE_VER)-linux-x86_64.tar.xz:
-	$(CURL) $@ https://github.com/UPBGE/upbge/releases/download/v$(UPBGE_VER)/upbge-$(UPBGE_VER)-linux-x86_64.tar.xz
+.PHONY: blender
+blender: $(BLENDER)
+	$< blender/$(MODULE).blend
+
+$(BLENDER): $(GZ)/$(UPBGE).tar.xz
+	cd $(BGE)/.. ; xzcat $< | tar x && touch $@
+$(GZ)/$(UPBGE).tar.xz:
+	$(CURL) $@ https://github.com/UPBGE/upbge/releases/download/v$(UPBGE_VER)/$(UPBGE).tar.xz
 
 # merge
 MERGE += Makefile README.md .gitignore .clang-format LICENSE $(S)
