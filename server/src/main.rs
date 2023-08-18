@@ -39,10 +39,15 @@ const TEXT_PLAIN: &[u8] = b"Content-Type: text/plain\n";
 const TEXT_HTML: &[u8] = b"Content-Type: text/html\n";
 const TEXT_CSS: &[u8] = b"Content-Type: text/css\n";
 const IMAGE_PNG: &[u8] = b"Content-Type: image/png\n";
-const APP_MANIFEST: &[u8] = b"application/manifest+json\n";
 
+const APP_MANIFEST: &[u8] = b"application/manifest+json\n";
+const MANIFEST_HEAD: &[u8] = b"<link rel=\"manifest\" href=\"/manifest\">";
+
+const HTML_HEAD1: &[u8] = include_bytes!("../template/html.head1");
+const HTML_HEAD2: &[u8] = include_bytes!("../template/html.head2");
 const INDEX_HEAD: &[u8] = include_bytes!("../template/index.html.head");
 const INDEX_TAIL: &[u8] = include_bytes!("../template/index.html.tail");
+const ABOUT_HTML: &[u8] = include_bytes!("../static/about.html");
 const LOGO_PNG: &[u8] = include_bytes!("../static/logo/512.png");
 const LOGO_48: &[u8] = include_bytes!("../static/logo/48.png");
 const LOGO_72: &[u8] = include_bytes!("../static/logo/72.png");

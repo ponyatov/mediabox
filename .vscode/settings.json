@@ -26,6 +26,8 @@
         "*.br": "makefile",
         "*.bb": "makefile",
         "*.kernel": "makefile",
+        "*.head*": "html",
+        "*.tail*": "html",
     },
 
     // editor
