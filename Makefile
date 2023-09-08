@@ -19,7 +19,7 @@ UPBGE = upbge-$(UPBGE_VER)-linux-x86_64
 CWD = $(CURDIR)
 GZ  = $(HOME)/gz
 CAR = $(HOME)/.cargo/bin
-BGE = $(HOME)/upbge/$(UPBGE)
+BGE = $(HOME)/$(UPBGE)
 
 # tool
 CURL    = curl -L -o
