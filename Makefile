@@ -7,6 +7,13 @@ REL     = $(shell git rev-parse --short=4 HEAD)
 BRANCH  = $(shell git rev-parse --abbrev-ref HEAD)
 CORES  ?= $(shell grep processor /proc/cpuinfo | wc -l)
 
+APP ?= $(MODULE)
+HW  ?= qemu386
+include   hw/$(HW).mk
+include  cpu/$(CPU).mk
+include arch/$(ARCH).mk
+include  app/$(APP).mk
+
 # version
 BR_VER    = 2024.02.2
 LINUX_VER = 6.6.31
@@ -36,7 +43,7 @@ BR_URL = https://github.com/buildroot/buildroot/archive/refs/tags
 
 # all
 .PHONY: all
-all:
+all: br
 
 QEMU_KERNEL = bin/bzImage
 QEMU_INITRD = bin/rootfs.cpio
@@ -50,23 +57,24 @@ format: tmp/format_rs
 
 # buildroot
 
-# APP ?= $(MODULE)
-# HW  ?= qemu386
-# include   hw/$(HW).mk
-# include  cpu/$(CPU).mk
-# include arch/$(ARCH).mk
-# include  app/$(APP).mk
 
-# BR_CONFIG     = $(BR)/.config
-# KERNEL_CONFIG = $(BR)/output/build/linux-$(LINUX_VER)/.config
+# .PHONY: $(KERNEL_CONFIG)
+# $(KERNEL_CONFIG): $(BR)/.config
+# 	mkdir -p $(BR) $(BR)/output $(BR)/output/build $(BR)/output/build/linux-$(LINUX_VER)
+# 	cat all/all.kernel > $@
 
-# .PHONY: br
-# br: $(BR_CONFIG) $(KERNEL_CONFIG)
-# 	cd $(BR) ; make menuconfig && make linux-menuconfig && make
+# buildroot
 
-# .PHONY: $(BR_CONFIG)
-# $(BR_CONFIG): $(BR)/README
-# 	rm -f $@ ; make -C $(BR) allnoconfig
+BR_CONFIG     = $(BR)/.config
+KERNEL_CONFIG = $(BR)/output/build/linux-$(LINUX_VER)/.config
+
+.PHONY: br
+br: $(BR_CONFIG) $(KERNEL_CONFIG)
+	cd $(BR) ; make menuconfig && make linux-menuconfig && make
+
+.PHONY: $(BR_CONFIG)
+$(BR_CONFIG): $(BR)/README
+	rm -f $@ ; make -C $(BR) allnoconfig
 # #
 # 	cat  all/all.br     >> $@
 # 	cat arch/$(ARCH).br >> $@
@@ -80,10 +88,12 @@ format: tmp/format_rs
 # 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
 
-# .PHONY: $(KERNEL_CONFIG)
-# $(KERNEL_CONFIG): $(BR)/.config
-# 	mkdir -p $(BR) $(BR)/output $(BR)/output/build $(BR)/output/build/linux-$(LINUX_VER)
-# 	cat all/all.kernel > $@
+
+$(BR)/README: $(GZ)/$(BR).tar.gz
+	tar -C . -xf $< && touch $@
+
+$(GZ)/$(BR_GZ):
+	$(CURL) $@ $(BR_URL)/$(BR_VER).tar.gz
 
 # rule
 bin/%: $(BR)/output/images/%
@@ -93,8 +103,6 @@ ref/%/README: $(GZ)/%.tar.xz
 	tar -C ref -xf $< && touch $@
 ref/%/README: $(GZ)/%.tar.gz
 	tar -C ref -xf $< && touch $@
-$(BR)/README: $(GZ)/$(BR).tar.gz
-	tar -C . -xf $< && touch $@
 
 # install
 .PHONY: install update ref gz
@@ -106,9 +114,6 @@ update:
 ref:
 gz: \
 	$(BR)/README
-
-$(GZ)/$(BR_GZ):
-	$(CURL) $@ $(BR_URL)/$(BR_VER).tar.gz
 
 # merge
 MERGE += Makefile README.md apt.txt LICENSE
