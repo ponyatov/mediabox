@@ -121,26 +121,29 @@ MERGE += .clang-format .editorconfig .doxygen .gitignore
 MERGE += .vscode bin doc lib inc src tmp ref
 MERGE += app hw cpu arch all
 
-# .PHONY: dev
-# dev:
-# 	git push -v
-# 	git checkout $@
-# 	git pull -v
-# 	git checkout shadow -- $(MERGE)
-# #	$(MAKE) doxy ; git add -f docs
+.PHONY: dev
+dev:
+	git push -v
+	git checkout $@
+	git pull -v
+	git checkout shadow -- $(MERGE)
+	$(MAKE) doxy ; git add -f docs
 
-# .PHONY: shadow
-# shadow:
-# 	git push -v
-# 	git checkout $@
-# 	git pull -v
+.PHONY: shadow
+shadow:
+	git push -v
+	git checkout $@
+	git pull -v
 
-# .PHONY: release
-# release:
-# 	git tag $(NOW)-$(REL)
-# 	git push -v --tags
-# 	$(MAKE) shadow
+.PHONY: release
+release:
+	git tag $(NOW)-$(REL)
+	git push -v --tags
+	$(MAKE) shadow
 
-# ZIP = tmp/$(MODULE)_$(NOW)_$(REL)_$(BRANCH).zip
-# zip:
-# 	git archive --format zip --output $(ZIP) HEAD
+.PHONY: zip
+zip:
+	git archive \
+		--format zip \
+		--output $(TMP)/$(MODULE)_$(NOW)_$(REL).src.zip \
+	HEAD
