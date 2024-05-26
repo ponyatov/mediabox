@@ -14,14 +14,13 @@
     "files.exclude": {
         "docs": true,
         ".vscode/*.log": true,
-        "buildroot-*/**": true,
+        "buildroot-*": true,
     },
-
     "files.watcherExclude": {
         "docs": true,
-        "buildroot-*/**": true,
+        "ref/**": true,
+        "buildroot-*": true,
     },
-
     "files.associations": {
         "*.br": "makefile",
         "*.bb": "makefile",
@@ -38,4 +37,10 @@
     "workbench.tree.indent": 24,
     "explorer.autoReveal": false,
     "files.insertFinalNewline": true,
+    "git.enabled": false,
+
+    // clang-format
+    "clang-format.executable":    "clang-format",
+    "clang-format.fallbackStyle": "Google",
+    "clang-format.style":         "file",
 }
