@@ -29,6 +29,7 @@ GZ    = $(HOME)/gz
 DISTR = $(HOME)/distr
 BUILD = $(CWD)/tmp/$(MODULE)
 CAR   = $(HOME)/.cargo/bin
+ROOT  = $(CWD)/root
 
 # tool
 CURL   = curl -L -o
@@ -82,9 +83,12 @@ $(BR_CONFIG): $(BR)/README
 	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_DEFAULT_KERNEL_VERSION="$(LINUX_VER)"'                   >> $@
+	echo 'BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="$(LINUX_VER)"'        >> $@
 	echo 'BR2_TARGET_GENERIC_HOSTNAME="$(APP)"'                        >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
+	echo 'BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH="$(ROOT)/lib/images/control.png"' >> $@
+	echo 'BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="$(ROOT)/boot/isolinux.cfg"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
 
 .PHONY: $(KERNEL_CONFIG)
