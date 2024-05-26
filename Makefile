@@ -57,9 +57,6 @@ format: tmp/format_rs
 
 # buildroot
 
-
-# .PHONY: $(KERNEL_CONFIG)
-# $(KERNEL_CONFIG): $(BR)/.config
 # 	mkdir -p $(BR) $(BR)/output $(BR)/output/build $(BR)/output/build/linux-$(LINUX_VER)
 # 	cat all/all.kernel > $@
 
@@ -75,19 +72,23 @@ br: $(BR_CONFIG) $(KERNEL_CONFIG)
 .PHONY: $(BR_CONFIG)
 $(BR_CONFIG): $(BR)/README
 	rm -f $@ ; make -C $(BR) allnoconfig
-# #
-# 	cat  all/all.br     >> $@
-# 	cat arch/$(ARCH).br >> $@
-# 	cat  cpu/$(CPU).br  >> $@
-# 	cat   hw/$(HW).br   >> $@
-# 	cat  app/$(APP).br  >> $@
-# #
-# 	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
-# 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
-# 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
-# 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
+#
+	cat  all/all.br     >> $@
+	cat arch/$(ARCH).br >> $@
+	cat  cpu/$(CPU).br  >> $@
+	cat   hw/$(HW).br   >> $@
+	cat  app/$(APP).br  >> $@
+#
+	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
+	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
+	echo 'BR2_DEFAULT_KERNEL_VERSION="$(LINUX_VER)"'                   >> $@
+	echo 'BR2_TARGET_GENERIC_HOSTNAME="$(APP)"'                        >> $@
+	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
+	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
 
+.PHONY: $(KERNEL_CONFIG)
+$(KERNEL_CONFIG): $(BR)/.config
 
 $(BR)/README: $(GZ)/$(BR).tar.gz
 	tar -C . -xf $< && touch $@
