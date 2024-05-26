@@ -30,12 +30,19 @@ REF    = git clone --depth 1 -o gh
 RUSTUP = $(CAR)/rustup
 
 # package
-BR    = buildroot-$(BR_VER)
-BR_GZ = $(BR).tar.gz
+BR     = buildroot-$(BR_VER)
+BR_GZ  = $(BR).tar.gz
+BR_URL = https://github.com/buildroot/buildroot/archive/refs/tags
 
 # all
 .PHONY: all
 all:
+
+QEMU_KERNEL = bin/bzImage
+QEMU_INITRD = bin/rootfs.cpio
+qemu: $(QEMU_KERNEL)
+	$(QEMU) $(QEMU_CFG) \
+		-kernel $(QEMU_KERNEL) -initrd $(QEMU_INITRD)
 
 # format
 .PHONY: format
@@ -78,42 +85,30 @@ format: tmp/format_rs
 # 	mkdir -p $(BR) $(BR)/output $(BR)/output/build $(BR)/output/build/linux-$(LINUX_VER)
 # 	cat all/all.kernel > $@
 
-# $(BR)/README: $(GZ)/$(BR_GZ)
-# 	zcat $< | tar x && touch $@
+# rule
+bin/%: $(BR)/output/images/%
+	cp $< $@
 
-# $(GZ)/$(BR_GZ):
-# 	$(CURL) $@ https://github.com/buildroot/buildroot/archive/refs/tags/2023.05.1.tar.gz
+ref/%/README: $(GZ)/%.tar.xz
+	tar -C ref -xf $< && touch $@
+ref/%/README: $(GZ)/%.tar.gz
+	tar -C ref -xf $< && touch $@
+$(BR)/README: $(GZ)/$(BR).tar.gz
+	tar -C . -xf $< && touch $@
 
-# QEMU_KERNEL = $(BR)/output/images/bzImage
-# QEMU_INITRD = $(BR)/output/images/rootfs.cpio
-# qemu: $(QEMU_KERNEL)
-# 	$(QEMU) $(QEMU_CFG) \
-# 		-kernel $(QEMU_KERNEL) -initrd $(QEMU_INITRD)
+# install
+.PHONY: install update ref gz
+install: doc ref gz
+	$(MAKE) update
+update:
+	sudo apt update
+	sudo apt install -yu `cat apt.txt`
+ref:
+gz: \
+	$(BR)/README
 
-# # install
-# .PHONY: install update
-
-# install: gz $(RUSTUP)
-# 	cargo install cargo-watch
-# 	$(MAKE) update
-# update:
-# 	sudo apt update
-# 	sudo apt install -yu `cat apt.dev apt.txt`
-
-# .PHONY: gz
-# gz: $(BR)/README $(BLENDER)
-
-# $(RUSTUP):
-# 	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# .PHONY: blender
-# blender: $(BLENDER)
-# 	$< blender/$(MODULE).blend
-
-# $(BLENDER): $(GZ)/$(UPBGE).tar.xz
-# 	cd $(BGE)/.. ; xzcat $< | tar x && touch $@
-# $(GZ)/$(UPBGE).tar.xz:
-# 	$(CURL) $@ https://github.com/UPBGE/upbge/releases/download/v$(UPBGE_VER)/$(UPBGE).tar.xz
+$(GZ)/$(BR_GZ):
+	$(CURL) $@ $(BR_URL)/$(BR_VER).tar.gz
 
 # merge
 MERGE += Makefile README.md apt.txt LICENSE
