@@ -68,7 +68,7 @@ KERNEL_CONFIG = $(BR)/output/build/linux-$(LINUX_VER)/.config
 
 .PHONY: br
 br: $(BR_CONFIG) $(KERNEL_CONFIG)
-	cd $(BR) ; make menuconfig && make linux-menuconfig && make
+	cd $(BR) ; make
 
 .PHONY: $(BR_CONFIG)
 $(BR_CONFIG): $(BR)/README
@@ -90,9 +90,14 @@ $(BR_CONFIG): $(BR)/README
 	echo 'BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH="$(ROOT)/lib/images/control.png"' >> $@
 	echo 'BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="$(ROOT)/boot/isolinux.cfg"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
+	make -C $(BR) menuconfig && touch $@
 
 .PHONY: $(KERNEL_CONFIG)
-$(KERNEL_CONFIG): $(BR)/.config
+$(KERNEL_CONFIG): $(BR_CONFIG)
+# echo 'CONFIG_LOCALVERSION="-$(APP)"'    >> $@
+	echo 'CONFIG_DEFAULT_HOSTNAME="$(APP)"' >> $@
+#
+	make -C $(BR) linux-menuconfig
 
 $(BR)/README: $(GZ)/$(BR).tar.gz
 	tar -C . -xf $< && touch $@
