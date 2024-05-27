@@ -81,6 +81,7 @@ $(BR_CONFIG): $(BR)/README
 	cat  app/$(APP).br  >> $@
 #
 	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
+	echo 'BR2_JLEVEL=$(CORES)'                                         >> $@
 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_DEFAULT_KERNEL_VERSION="$(LINUX_VER)"'                   >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="$(LINUX_VER)"'        >> $@
