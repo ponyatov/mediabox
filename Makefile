@@ -94,6 +94,7 @@ $(BR_CONFIG): $(BR)/README
 
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR_CONFIG)
+	mkdir -p $(dir $@) ; touch $@
 # echo 'CONFIG_LOCALVERSION="-$(APP)"'    >> $@
 	echo 'CONFIG_DEFAULT_HOSTNAME="$(APP)"' >> $@
 #
