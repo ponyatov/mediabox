@@ -1,1 +1,1 @@
-# QEMU = qemu-system-i386
+QEMU = qemu-system-i386
