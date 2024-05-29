@@ -44,13 +44,16 @@ BR_URL = https://github.com/buildroot/buildroot/archive/refs/tags
 
 # all
 .PHONY: all
-all: br
+all: fw
 
 QEMU_KERNEL = bin/bzImage
 QEMU_INITRD = bin/rootfs.cpio
-qemu: $(QEMU_KERNEL)
-	$(QEMU) $(QEMU_CFG) \
+QEMU_CDROM  = bin/rootfs.iso
+qemu: $(QEMU_KERNEL) $(QEMU_INITRD)
+	$(QEMU) $(QEMU_CFG) -append '$(BOOTARGS)' \
 		-kernel $(QEMU_KERNEL) -initrd $(QEMU_INITRD)
+.PHONY: fw
+fw: $(QEMU_KERNEL) $(QEMU_INITRD) $(QEMU_CDROM)
 
 # format
 .PHONY: format
@@ -81,13 +84,14 @@ $(BR_CONFIG): $(BR)/README
 	cat  app/$(APP).br  >> $@
 #
 	echo 'BR2_DL_DIR="$(GZ)"'                                          >> $@
+	echo 'BR2_JLEVEL=$(CORES)'                                         >> $@
 	echo 'BR2_ROOTFS_OVERLAY="$(CWD)/root"'                            >> $@
 	echo 'BR2_DEFAULT_KERNEL_VERSION="$(LINUX_VER)"'                   >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="$(LINUX_VER)"'        >> $@
 	echo 'BR2_TARGET_GENERIC_HOSTNAME="$(APP)"'                        >> $@
 	echo 'BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="$(CWD)/all/all.kernel"' >> $@
 	echo 'BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="$(CWD)/arch/$(ARCH).kernel $(CWD)/cpu/$(CPU).kernel $(CWD)/hw/$(HW).kernel $(CWD)/app/$(APP).kernel"' >> $@
-	echo 'BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH="$(ROOT)/lib/images/control.png"' >> $@
+# echo 'BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH="$(ROOT)/lib/images/control.png"' >> $@
 	echo 'BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="$(ROOT)/boot/isolinux.cfg"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
 	make -C $(BR) -j$(CORES) menuconfig && touch $@
@@ -95,10 +99,8 @@ $(BR_CONFIG): $(BR)/README
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR_CONFIG)
 	mkdir -p $(dir $@) ; touch $@
-# echo 'CONFIG_LOCALVERSION="-$(APP)"'    >> $@
 	echo 'CONFIG_DEFAULT_HOSTNAME="$(APP)"' >> $@
-#
-	make -C $(BR) -j$(CORES) linux-menuconfig
+	make -C $(BR) linux-menuconfig
 
 $(BR)/README: $(GZ)/$(BR).tar.gz
 	tar -C . -xf $< && touch $@
@@ -108,6 +110,8 @@ $(GZ)/$(BR_GZ):
 
 # rule
 bin/%: $(BR)/output/images/%
+	cp $< $@
+bin/%: $(BR)/output/images/%9660
 	cp $< $@
 
 ref/%/README: $(GZ)/%.tar.xz

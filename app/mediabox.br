@@ -1,8 +1,9 @@
-# BR2_TARGET_GENERIC_HOSTNAME="mediabox"
+BR2_TARGET_GENERIC_HOSTNAME="mediabox"
 # BR2_TARGET_GENERIC_ISSUE="https://github.com/ponyatov/mediabox"
 
-# # packages
-# # audio/video
+# packages
+
+# audio/video
 # BR2_PACKAGE_ALSA_UTILS_APLAYMIDI=y
 # BR2_PACKAGE_VLC=y
 # # graphic

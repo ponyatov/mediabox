@@ -1,5 +1,5 @@
 git make curl
 code meld doxygen clang-format
-qemu-system-i386
+qemu-system-x86
 g++ flex bison
 rsync bc libncurses-dev
