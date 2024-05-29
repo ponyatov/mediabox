@@ -90,14 +90,15 @@ $(BR_CONFIG): $(BR)/README
 	echo 'BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH="$(ROOT)/lib/images/control.png"' >> $@
 	echo 'BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="$(ROOT)/boot/isolinux.cfg"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
-	make -C $(BR) menuconfig && touch $@
+	make -C $(BR) -j$(CORES) menuconfig && touch $@
 
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR_CONFIG)
+	mkdir -p $(dir $@) ; touch $@
 # echo 'CONFIG_LOCALVERSION="-$(APP)"'    >> $@
 	echo 'CONFIG_DEFAULT_HOSTNAME="$(APP)"' >> $@
 #
-	make -C $(BR) linux-menuconfig
+	make -C $(BR) -j$(CORES) linux-menuconfig
 
 $(BR)/README: $(GZ)/$(BR).tar.gz
 	tar -C . -xf $< && touch $@
