@@ -1,2 +1,3 @@
 CPU = i686
-# BOOTARGS += vga=0x202
+BOOTARGS += video=800x600-24
+# vga=0x315
