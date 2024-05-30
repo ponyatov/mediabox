@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# https://wiki.inmys.ru/doku.php?id=boards:nms-hh-px30:autorun
+
+. /etc/profile
+
+case "$1" in
+  start)
+	  	
+		# weston --tty=2 --idle-time=0 &
+		{
+			# Wait for weston ready
+			# while [ ! -e ${XDG_RUNTIME_DIR}/wayland-0 ]; do
+			# 	sleep .1
+			# done
+            echo "Wayland!"
+		}&
+	;;
+  stop)
+		killall app
+        ;;
+  *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
+esac
+exit 0
+
+case "$1" in
+  start)
+
+		# Wait for weston ready
+		while [ ! -e ${XDG_RUNTIME_DIR}/wayland-0 ]; do
+			sleep .1
+		done
+		/mnt/store/a7server/app&
+	;;
+esac
