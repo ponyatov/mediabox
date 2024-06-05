@@ -98,7 +98,7 @@ $(BR_CONFIG): $(BR)/README
 # echo 'BR2_LINUX_KERNEL_CUSTOM_LOGO_PATH="$(ROOT)/lib/images/control.png"' >> $@
 	echo 'BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="$(ROOT)/boot/isolinux.cfg"' >> $@
 # 	echo 'BR2_UCLIBC_CONFIG_FRAGMENT_FILES="$(CWD)/all/all.uclibc"'    >> $@
-	make -C $(BR) -j$(CORES) menuconfig && touch $@
+	make -C $(BR) -j$(CORES) BR2_EXTERNAL=$(CWD)/vendor menuconfig && touch $@
 
 .PHONY: $(KERNEL_CONFIG)
 $(KERNEL_CONFIG): $(BR_CONFIG)
