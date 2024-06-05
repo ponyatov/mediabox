@@ -73,6 +73,10 @@ KERNEL_CONFIG = $(BR)/output/build/linux-$(LINUX_VER)/.config
 br: $(BR_CONFIG) $(KERNEL_CONFIG)
 	cd $(BR) ; make
 
+.PHONY: rootfs
+rootfs:
+	cd $(BR) ; make $@-iso9660
+
 .PHONY: $(BR_CONFIG)
 $(BR_CONFIG): $(BR)/README
 	rm -f $@ ; make -C $(BR) allnoconfig
