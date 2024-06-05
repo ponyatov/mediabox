@@ -14,8 +14,9 @@ case "$1" in
 			# 	sleep .1
 			# done
             echo "Wayland!"
+            ls -la ${XDG_RUNTIME_DIR}
 		}&
-	;;
+    ;;
   stop)
 		killall app
         ;;
@@ -26,13 +27,13 @@ case "$1" in
 esac
 exit 0
 
-case "$1" in
-  start)
+# case "$1" in
+#   start)
 
-		# Wait for weston ready
-		while [ ! -e ${XDG_RUNTIME_DIR}/wayland-0 ]; do
-			sleep .1
-		done
-		/mnt/store/a7server/app&
-	;;
-esac
+# 		# Wait for weston ready
+# 		while [ ! -e ${XDG_RUNTIME_DIR}/wayland-0 ]; do
+# 			sleep .1
+# 		done
+# 		/mnt/store/a7server/app&
+# 	;;
+# esac
