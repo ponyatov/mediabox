@@ -1,3 +1,4 @@
 #!/bin/sh
-mkdir -p /var /var/run /var/run/xdg
-chmod 0700 /var/run/xdg
+TARGET_DIR="${1}"
+mkdir -p ${TARGET_DIR}/var ${TARGET_DIR}/var/run ${TARGET_DIR}/var/run/xdg
+chmod 0700 ${TARGET_DIR}/var/run/xdg

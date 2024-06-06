@@ -6,19 +6,19 @@
 
 case "$1" in
   start)
-	  	
-		# weston --tty=2 --idle-time=0 &
+		weston --tty=5 --idle-time=0 &
 		{
 			# Wait for weston ready
 			# while [ ! -e ${XDG_RUNTIME_DIR}/wayland-0 ]; do
 			# 	sleep .1
 			# done
-            echo "Wayland!"
+            echo "Wayland!" ${XDG_RUNTIME_DIR}
             ls -la ${XDG_RUNTIME_DIR}
+            # weston-terminal
 		}&
     ;;
   stop)
-		killall app
+		killall weston-terminal
         ;;
   *)
         echo "Usage: $0 {start|stop}"
@@ -26,14 +26,3 @@ case "$1" in
         ;;
 esac
 exit 0
-
-# case "$1" in
-#   start)
-
-# 		# Wait for weston ready
-# 		while [ ! -e ${XDG_RUNTIME_DIR}/wayland-0 ]; do
-# 			sleep .1
-# 		done
-# 		/mnt/store/a7server/app&
-# 	;;
-# esac
