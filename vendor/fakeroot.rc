@@ -1,0 +1,3 @@
+#!/bin/sh
+mkdir -p /var /var/run /var/run/xdg
+chmod 0700 /var/run/xdg

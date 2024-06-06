@@ -19,6 +19,8 @@
 ::sysinit:/bin/mkdir -p /dev/pts /dev/shm
 ::sysinit:/bin/mount -a
 ::sysinit:/bin/mkdir -p /run/lock/subsys
+::sysinit:/bin/mkdir -p /var /var/run /var/run/xdg
+::sysinit:/bin/chmod 0700 /var/run/xdg
 ::sysinit:/sbin/swapon -a
 null::sysinit:/bin/ln -sf /proc/self/fd /dev/fd
 null::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin
