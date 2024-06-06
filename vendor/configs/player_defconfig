@@ -1,0 +1,2 @@
+# toolchain
+BR2_TOOLCHAIN_BUILDROOT_VENDOR="intetix"
