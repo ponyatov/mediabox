@@ -75,7 +75,8 @@ br: $(BR_CONFIG) $(KERNEL_CONFIG)
 
 .PHONY: rootfs
 rootfs:
-	cd $(BR) ; make $@-cpio $@-iso9660
+	cd $(BR) ; make $@-iso9660
+# make $@-cpio
 
 .PHONY: $(BR_CONFIG)
 $(BR_CONFIG): $(BR)/README
